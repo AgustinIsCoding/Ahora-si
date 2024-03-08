@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio Sesión</title>
+  <style>html {
+    --r: 56px; /* control the size */
+    --c1: #3FB8AF /*color 1*/ 99%,#0000 101%;
+    --c2: #FF9E9D /*color 2*/ 99%,#0000 101%;
+    
+    --s:calc(var(--r)*.866);  /* .866 = cos(30deg) */
+    --g0:radial-gradient(var(--r),var(--c1));
+    --g1:radial-gradient(var(--r),var(--c2));
+    --f:radial-gradient(var(--r) at calc(100% + var(--s)) 50%,var(--c1));
+    --p:radial-gradient(var(--r) at 100% 50%,var(--c2));
+    background:
+      var(--f) 0 calc(-5*var(--r)/2),
+      var(--f) calc(-2*var(--s)) calc(var(--r)/2),
+      var(--p) 0 calc(-2*var(--r)),
+      var(--g0) var(--s) calc(-5*var(--r)/2),
+      var(--g1) var(--s) calc( 5*var(--r)/2),
+      radial-gradient(var(--r) at 100% 100%,var(--c1)) 0 calc(-1*var(--r)),   
+      radial-gradient(var(--r) at 0%   50% ,var(--c1)) 0 calc(-4*var(--r)),
+      var(--g1) calc(-1*var(--s)) calc(-7*var(--r)/2),
+      var(--g0) calc(-1*var(--s)) calc(-5*var(--r)/2),
+      var(--p) calc(-2*var(--s)) var(--r),
+      var(--g0) calc(-1*var(--s)) calc(var(--r)/ 2),
+      var(--g1) calc(-1*var(--s)) calc(var(--r)/-2),
+      var(--g0) 0 calc(-1*var(--r)),
+      var(--g1) var(--s) calc(var(--r)/-2),
+      var(--g0) var(--s) calc(var(--r)/ 2) 
+      #FF9E9D; /*color 2 again here */
+    background-size: calc(4*var(--s)) calc(6*var(--r));
+  }
+  
+  body{
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100svh;
+    font-size: larger;
+  }
+  
+  .form-container{
+    width: 500px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+  }
+  
+  button{
+    background-color: #FF9E9D;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  form{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  form+p, form p{
+    text-align: center;
+  }
+  
+  input, button{
+    border-radius: 4px;
+    border: unset;
+    padding: 15px 30px;
+    font-size: medium;
+  }
+  
+  .error{
+    color: rgb(255,81,81);
+  }
+  
+  .escondido{
+    display: none;
+  }
+  
+  .sr-only{
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }</style>
+</head>
+<body>
+  <main>
+    <div class="form-container">
+      <h1>Iniciar sesión</h1>
+      <p>Ingresa tus credenciales para acceder al area de administracion</p>
+      <form id="login-form">
+        <label for="user" class="sr-only">User</label>
+        <input type="text" name="user" id="user" placeholder="Nombre de usuario">
+        <label for="password" class="sr-only">Password</label>
+        <input type="password" name="password" id="password" placeholder="Contraseña">
+        <button type="submit">Iniciar sesión</button>
+        <p class="error escondido">Error al iniciar sesión</p>
+      </form>
+      <p>No tienes una cuenta? - <a href="/register">Registrate</a></p>
+    </div>
+  </main>
+  <script>
+    const mensajeError = document.getElementsByClassName("error")[0];
+document.getElementById("login-form").addEventListener('submit',async (e)=>{
+  e.preventDefault();
+  const user=e.target.children.user.value;
+  const password=e.target.children.password.value;
+  const res = await fetch("http://localhost:4000/api/login",{
+    method: "POST",
+    headers: {
+      "Content-Type":"application/json"
+    },
+    body:  JSON.stringify({user,password})
+    
+  })
+  if(!res.ok) return mensajeError.classList.toggle("escondido",false);
+  const resJson = await res.json();
+  if(resJson.redirect){
+    window.location.href = resJson.redirect;
+  }
+})
+  </script>
+</body>
+</html>
