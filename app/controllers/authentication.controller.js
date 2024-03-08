@@ -69,7 +69,7 @@ async function register(req,res) {
   }
   usuarios.push(nuevoUsuario);
   console.log(nuevoUsuario)
-  return res.status(201).send({status: "Ok", message:`Usuario ${nuevoUsuario.user} agregado`, redirect:"/home"}) 
+  return res.status(201).send({status: "Ok", message:`Usuario ${nuevoUsuario.user} agregado`, redirect:"/"}) 
 }
 
 export const methods={
