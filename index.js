@@ -22,7 +22,7 @@ app.use(cookieParser())
 app.use("/assets", express.static(path.resolve(__dirname,"assets")))
 //poner authorization dependiendo del role
 app.get("/login",authorization.soloPublico,(req, res)=> res.sendFile(__dirname + "/app/pages/login.html"))
-app.get("/home",authorization.nuncaHome,(req, res)=> res.sendFile(__dirname + "/index.html"))
+app.get("/",authorization.nuncaHome,(req, res)=> res.sendFile(__dirname + "/index.html"))
 app.get("/register",authorization.soloPublico, (req, res)=> res.sendFile(__dirname + "/app/pages/register.html"))
 app.get("/admin",authorization.soloAdmin, (req, res)=> res.sendFile(__dirname + "/app/pages/admin/admin.html"))
 app.get("/manager",authorization.soloManager, (req, res)=> res.sendFile(__dirname + "/app/pages/manager.html"))
