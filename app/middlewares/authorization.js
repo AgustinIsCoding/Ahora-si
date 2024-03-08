@@ -15,7 +15,7 @@ function soloAdmin(req,res,next){
       return next();
     }
   }else{
-    return res.redirect("/home")
+    return res.redirect("/")
   }
 }
 
@@ -55,7 +55,7 @@ function soloManager(req,res,next){
       return next();
     }
   }else{
-    return res.redirect("/home")
+    return res.redirect("/")
   }
 }
 
