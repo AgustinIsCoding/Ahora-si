@@ -126,6 +126,7 @@ document.getElementById("register-form").addEventListener("submit",async (e)=>{
       password:e.target.children.password.value
     })
   })
+  console.log(body)
   if(!res.ok) return mensajeError.classList.toggle("escondido", false);
   const resJson = await res.json();
   if(resJson.redirect){
